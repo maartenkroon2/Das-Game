@@ -8,6 +8,7 @@ TagManager:
   - DriverCamera
   - Slider_Throttle
   - Canvas
+  - Terrain
   layers:
   - Default
   - TransparentFX
