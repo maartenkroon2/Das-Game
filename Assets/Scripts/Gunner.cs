@@ -20,4 +20,10 @@ public class Gunner : PlayerCharacter
             Instantiate(torpedo, transform.position, transform.rotation);
         }
     }
+
+    private void LateUpdate()
+    {
+        if (camera.transform.position.y <= 0) { RenderSettings.fog = true; }
+        else { RenderSettings.fog = false; }
+    }
 }

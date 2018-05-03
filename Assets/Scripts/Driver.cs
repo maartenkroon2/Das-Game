@@ -62,4 +62,10 @@ public class Driver : PlayerCharacter
         rigidbody.AddForce(rigidbody.transform.forward * 300000 * throttle);
         //rigidbody.MovePosition(rigidbody.transform.position + rigidbody.transform.up * depth_throttle * Time.deltaTime);
     }
+
+    private void LateUpdate()
+    {
+        if (camera.transform.position.y < 0) { RenderSettings.fog = true; }
+        else { RenderSettings.fog = false; }
+    }
 }

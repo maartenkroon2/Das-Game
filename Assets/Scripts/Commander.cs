@@ -5,21 +5,21 @@ using UnityEngine.UI;
 
 public class Commander : PlayerCharacter
 {
-    //private GameObject plane;
+    private GameObject plane;
 
     private Terrain terrain;
     [SerializeField]
     private Shader shader;
-    private RawImage rawimage;
+    //private RawImage rawimage;
 
     // Use this for initialization
     protected override void Start()
     {
         base.Start();
 
-        //plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
         terrain = Terrain.activeTerrain;
-        rawimage = GetComponentInChildren<RawImage>();
+        //rawimage = GetComponentInChildren<RawImage>();
 
 
         Createheighttexture();
@@ -34,11 +34,11 @@ public class Commander : PlayerCharacter
     {
         int terrain_resolution = terrain.terrainData.heightmapResolution - 1;
         Texture2D texture = new Texture2D(terrain_resolution, terrain_resolution);
-        rawimage.texture = texture;
-        //plane.GetComponent<Renderer>().material.mainTexture = texture;
-        //plane.GetComponent<Renderer>().material.shader = shader;
-        //plane.transform.position = new Vector3(terrain.transform.position.x + terrain.terrainData.size.x / 2, terrain.transform.position.y, terrain.transform.position.z + terrain.terrainData.size.z / 2);
-        //plane.transform.localScale = new Vector3(terrain.terrainData.size.x / 10, 0, terrain.terrainData.size.z / 10);
+        //rawimage.texture = texture;
+        plane.GetComponent<Renderer>().material.mainTexture = texture;
+        plane.GetComponent<Renderer>().material.shader = shader;
+        plane.transform.position = new Vector3(terrain.transform.position.x + terrain.terrainData.size.x / 2, terrain.transform.position.y, terrain.transform.position.z + terrain.terrainData.size.z / 2);
+        plane.transform.localScale = new Vector3(terrain.terrainData.size.x / 10, 0, terrain.terrainData.size.z / 10);
 
         //find lowest point in the map
         float min_height = terrain.terrainData.GetHeight(0, 0);
