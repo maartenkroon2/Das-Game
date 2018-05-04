@@ -57,9 +57,13 @@ public class Driver : PlayerCharacter
     // Super floaty experimental movement, just for testing.
     private void FixedUpdate()
     {
-        rigidbody.AddTorque(rigidbody.transform.up * steering * speed * 50000);
+        //rigidbody.AddTorque(rigidbody.transform.up * steering * speed * 50000);
+        rigidbody.transform.Rotate(rigidbody.transform.up * steering * speed * Time.deltaTime * 0.5f);
         rigidbody.velocity = rigidbody.transform.forward * speed;
-        rigidbody.AddForce(rigidbody.transform.forward * 300000 * throttle);
+        rigidbody.AddForce(rigidbody.transform.forward * 100000 * throttle);
+        if (Input.GetKey(KeyCode.LeftShift) && rigidbody.transform.position.y < 0) { rigidbody.MovePosition(rigidbody.transform.position + rigidbody.transform.up * 10 * Time.deltaTime); }
+        if (Input.GetKey(KeyCode.LeftControl)) { rigidbody.MovePosition(rigidbody.transform.position + rigidbody.transform.up * -10 * Time.deltaTime); }
+        if (rigidbody.transform.position.y >= 0) { rigidbody.transform.position = new Vector3(rigidbody.transform.position.x, 0, rigidbody.transform.position.z); }
         //rigidbody.MovePosition(rigidbody.transform.position + rigidbody.transform.up * depth_throttle * Time.deltaTime);
     }
 
