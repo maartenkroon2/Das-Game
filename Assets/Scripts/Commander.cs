@@ -18,12 +18,14 @@ public class Commander : PlayerCharacter
 
         plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
         terrain = Terrain.activeTerrain;
+        camera.transform.SetParent(null);
 
         Createheighttexture();
     }
 	
 	// Update is called once per frame
 	void Update () {
+        touch();
 		
 	}
 
@@ -60,13 +62,13 @@ public class Commander : PlayerCharacter
                     color = new Color(0.95f, 0.9f, 0.7f, 1); /*pale yellow*/
                 }
                 else {
-                    if (terrainheight > waterlevel-5)
+                    if (terrainheight > waterlevel-6)
                     {
                         color = new Color(1,1,1,1); //white for the shoreline
                     }
                     else
                     {
-                        color = new Color(0, Mathf.Floor((terrainheight - min_height-5) / (waterlevel - min_height-5) * 10) / 10, 1, 1); //color between blue(0,0,1,1) and cyan(0,1,1,1)
+                        color = new Color(0, Mathf.Floor((terrainheight - min_height-6) / (waterlevel - min_height-6) * 10) / 10, 1, 1); //color between blue(0,0,1,1) and cyan(0,1,1,1)
                     }
                 }
                 //else {  }
@@ -74,5 +76,41 @@ public class Commander : PlayerCharacter
             }
         }
         texture.Apply();
+    }
+
+    void touch()
+    {
+        // If there are two touches on the device...
+        if (Input.touchCount == 2)
+        {
+            // Store both touches.
+            Touch touchZero = Input.GetTouch(0);
+            Touch touchOne = Input.GetTouch(1);
+
+            // Find the position in the previous frame of each touch.
+            Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+            Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+
+            // Find the magnitude of the vector (the distance) between the touches in each frame.
+            float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+            float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+
+            // Find the difference in the distances between each frame.
+            float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+
+
+            // ... change the orthographic size based on the change in distance between the touches.
+            camera.orthographicSize += deltaMagnitudeDiff;
+
+            // Make sure the orthographic size never drops below zero.
+            camera.orthographicSize = Mathf.Max(camera.orthographicSize, 0.1f);
+        }
+        
+        if (Input.touchCount == 1)
+        {
+            Touch touchZero = Input.GetTouch(0);
+            if (touchZero.phase == TouchPhase.Moved)
+                { camera.transform.position += new Vector3(touchZero.deltaPosition.x, 0, touchZero.deltaPosition.y) * camera.orthographicSize / -300; }
+        }
     }
 }

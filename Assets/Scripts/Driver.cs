@@ -47,7 +47,8 @@ public class Driver : PlayerCharacter
 
         throttle = Slider_Throttle.value / Slider_Throttle.maxValue;
         max_stearing = 1f;// - rigidbody.velocity.magnitude / 120;
-        steering = Mathf.Min(Mathf.Max(input_steering * 2, -max_stearing), max_stearing) + Input.GetAxis("Horizontal");
+        steering = input_steering * 2 + Input.GetAxis("Horizontal");
+        Mathf.Clamp(steering, -1 *max_stearing, max_stearing);
         //depth_throttle = Slider_depth.value;
         speed = rigidbody.velocity.magnitude * Vector3.Dot(rigidbody.transform.forward, Vector3.Normalize(rigidbody.velocity));
         speedtext.text = "Speed: " + speed.ToString("F1");
@@ -58,9 +59,10 @@ public class Driver : PlayerCharacter
     private void FixedUpdate()
     {
         //rigidbody.AddTorque(rigidbody.transform.up * steering * speed * 50000);
-        rigidbody.transform.Rotate(rigidbody.transform.up * steering * speed * Time.deltaTime * 0.5f);
+        rigidbody.transform.Rotate(rigidbody.transform.up * steering * speed * Time.deltaTime * 0.2f);
         rigidbody.velocity = rigidbody.transform.forward * speed;
         rigidbody.AddForce(rigidbody.transform.forward * 100000 * throttle);
+
         if (Input.GetKey(KeyCode.LeftShift) && rigidbody.transform.position.y < 0) { rigidbody.MovePosition(rigidbody.transform.position + rigidbody.transform.up * 10 * Time.deltaTime); }
         if (Input.GetKey(KeyCode.LeftControl)) { rigidbody.MovePosition(rigidbody.transform.position + rigidbody.transform.up * -10 * Time.deltaTime); }
         if (rigidbody.transform.position.y >= 0) { rigidbody.transform.position = new Vector3(rigidbody.transform.position.x, 0, rigidbody.transform.position.z); }
@@ -69,7 +71,7 @@ public class Driver : PlayerCharacter
 
     private void LateUpdate()
     {
-        if (camera.transform.position.y < 0) { RenderSettings.fog = true; }
+        if (camera.transform.position.y <= 0.1) { RenderSettings.fog = true; } // (camera.transform.position.y <= 0) werkt niet goed, kans op een camera half onderwater maar geen fog
         else { RenderSettings.fog = false; }
     }
 }
