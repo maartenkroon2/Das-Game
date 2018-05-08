@@ -48,7 +48,7 @@ public class Driver : PlayerCharacter
         throttle = Slider_Throttle.value / Slider_Throttle.maxValue;
         max_stearing = 1f;// - rigidbody.velocity.magnitude / 120;
         steering = input_steering * 2 + Input.GetAxis("Horizontal");
-        Mathf.Clamp(steering, -1 *max_stearing, max_stearing);
+        steering = Mathf.Clamp(steering, -1 *max_stearing, max_stearing);
         //depth_throttle = Slider_depth.value;
         speed = rigidbody.velocity.magnitude * Vector3.Dot(rigidbody.transform.forward, Vector3.Normalize(rigidbody.velocity));
         speedtext.text = "Speed: " + speed.ToString("F1");

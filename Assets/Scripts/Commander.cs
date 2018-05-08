@@ -103,7 +103,7 @@ public class Commander : PlayerCharacter
             camera.orthographicSize += deltaMagnitudeDiff;
 
             // Make sure the orthographic size never drops below zero.
-            camera.orthographicSize = Mathf.Max(camera.orthographicSize, 0.1f);
+            camera.orthographicSize = Mathf.Clamp(camera.orthographicSize, 250,3000);
         }
         
         if (Input.touchCount == 1)
