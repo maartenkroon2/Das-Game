@@ -5,80 +5,30 @@ using UnityEngine.UI;
 
 public class Commander : PlayerCharacter
 {
-    private GameObject plane;
-
-    private Terrain terrain;
     [SerializeField]
-    private Shader shader;
+    private Heightmapmaker heightmapmaker;
+    private Vector3 map_size;
+    private float max_zoom;
 
     // Use this for initialization
     protected override void Start()
     {
         base.Start();
-
-        plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
-        terrain = Terrain.activeTerrain;
         camera.transform.SetParent(null);
+        map_size = Terrain.activeTerrain.terrainData.size;
+        max_zoom = Mathf.Min(map_size.x * (float)Screen.height / (float)Screen.width * 0.5f, map_size.z /2);
 
-        Createheighttexture();
+        Instantiate(heightmapmaker);
     }
 	
 	// Update is called once per frame
 	void Update () {
-        touch();
+        Touchzoom();
+        Touchscroll();
 		
 	}
 
-    void Createheighttexture()
-    {
-        int terrain_resolution = terrain.terrainData.heightmapResolution - 1;
-        Texture2D texture = new Texture2D(terrain_resolution, terrain_resolution);
-        plane.GetComponent<Renderer>().material.mainTexture = texture;
-        plane.GetComponent<Renderer>().material.shader = shader;
-        plane.transform.position = new Vector3(terrain.transform.position.x + terrain.terrainData.size.x / 2, terrain.transform.position.y, terrain.transform.position.z + terrain.terrainData.size.z / 2);
-        plane.transform.localScale = new Vector3(terrain.terrainData.size.x / 10, 0, terrain.terrainData.size.z / 10);
-        plane.layer = 13; //layer 13 is commandermap
-
-        //find lowest point in the map
-        float min_height = terrain.terrainData.GetHeight(0, 0);
-        for (int i = 0; i < terrain_resolution; i++)
-        {
-            for (int j = 0; j < terrain_resolution; j++)
-            {
-                min_height = Mathf.Min(min_height, terrain.terrainData.GetHeight(i, j));
-            }
-        }
-
-        //create a color and draw it on the texture
-        float waterlevel = terrain.transform.position.y * -1;
-        for (int i = 0; i < terrain_resolution; i++)
-        {
-            for (int j = 0; j < terrain_resolution; j++)
-            {
-                float terrainheight = terrain.terrainData.GetHeight(i, j);
-                Color color = new Color(0, 0, 0, 0);
-                if (terrainheight > waterlevel)
-                {
-                    color = new Color(0.95f, 0.9f, 0.7f, 1); /*pale yellow*/
-                }
-                else {
-                    if (terrainheight > waterlevel-6)
-                    {
-                        color = new Color(1,1,1,1); //white for the shoreline
-                    }
-                    else
-                    {
-                        color = new Color(0, Mathf.Floor((terrainheight - min_height-6) / (waterlevel - min_height-6) * 10) / 10, 1, 1); //color between blue(0,0,1,1) and cyan(0,1,1,1)
-                    }
-                }
-                //else {  }
-                texture.SetPixel(terrain_resolution - i, terrain_resolution - j, color); //rotates the location 180° before saving the pixel, don't know why this is necessary but it works
-            }
-        }
-        texture.Apply();
-    }
-
-    void touch()
+    void Touchzoom()
     {
         // If there are two touches on the device...
         if (Input.touchCount == 2)
@@ -103,14 +53,33 @@ public class Commander : PlayerCharacter
             camera.orthographicSize += deltaMagnitudeDiff;
 
             // Make sure the orthographic size never drops below zero.
-            camera.orthographicSize = Mathf.Clamp(camera.orthographicSize, 250,3000);
+            camera.orthographicSize = Mathf.Clamp(camera.orthographicSize, 250, max_zoom);
+
+            if (camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).x < 0) {camera.transform.position -= new Vector3(camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).x,0,0);}
+            if (camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).z < 0) {camera.transform.position -= new Vector3(0, 0 ,camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).z); }
+
+            if (camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).x > map_size.x) { camera.transform.position -= new Vector3(camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).x - map_size.x,0 ,0); }
+            if (camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).z > map_size.z) { camera.transform.position -= new Vector3(0, 0, camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).z - map_size.z); }
         }
-        
+    }
+
+    void Touchscroll()
+    {         
         if (Input.touchCount == 1)
         {
             Touch touchZero = Input.GetTouch(0);
             if (touchZero.phase == TouchPhase.Moved)
-                { camera.transform.position += new Vector3(touchZero.deltaPosition.x, 0, touchZero.deltaPosition.y) * camera.orthographicSize / -300; }
+            {
+                Vector3 camera_movement = new Vector3(touchZero.deltaPosition.x, 0, touchZero.deltaPosition.y) * camera.orthographicSize / -300;
+
+                if (camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).x + camera_movement.x < 0) { camera_movement.x = -camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).x; }
+                if (camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).z + camera_movement.z < 0) { camera_movement.z = -camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).z; }
+
+                if (camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).x + camera_movement.x > map_size.x) { camera_movement.x = map_size.x - camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).x; }
+                if (camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).z + camera_movement.z > map_size.z) { camera_movement.z = map_size.z - camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).z; }
+
+                camera.transform.position += camera_movement;
+            }
         }
     }
 }
