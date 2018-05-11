@@ -13,7 +13,8 @@ public class CustomNetworkManager : NetworkManager
     }
 
     public void JoinGame()
-    {  
+    {
+        networkAddress = networkAddressField.text;
         StartClient();
     }
 }
