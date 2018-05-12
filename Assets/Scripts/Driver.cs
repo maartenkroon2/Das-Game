@@ -78,6 +78,14 @@ public class Driver : PlayerCharacter
                     spr_steeringwheel_pointer = image;
                     break;
 
+                case "Handle":
+                    //do nothing, is an image of the slider
+                    break;
+
+                case "Background":
+                    //do nothing, is an image of the slider
+                    break;
+
                 default:
                     Debug.Log("Unkown image component: " + image.gameObject.name);
                     break;
@@ -121,8 +129,7 @@ public class Driver : PlayerCharacter
     // FixedUpdate is called every fixed timestep.
     private void FixedUpdate()
     {
-        //rigidbody.AddTorque(rigidbody.transform.up * steering * speed * 50000);
-        rigidbody.transform.Rotate(rigidbody.transform.up * steering * speed * Time.deltaTime * 0.2f);
+        rigidbody.AddTorque(rigidbody.transform.up * steering * speed * 100000);
         rigidbody.velocity = rigidbody.transform.forward * speed;
         rigidbody.AddForce(rigidbody.transform.forward * 100000 * throttle);
 
@@ -146,7 +153,7 @@ public class Driver : PlayerCharacter
         input_steering = total / 10;
 
         throttle = slider_throttle.value / slider_throttle.maxValue;
-        max_stearing = 1f - rigidbody.velocity.magnitude / max_speed / 1.3f; //1.3f betekent dat bij max speed nog (1/3)=33% stuurkracht over hebt
+        max_stearing = 1f - rigidbody.velocity.magnitude / max_speed * 0.7f; //0.7f betekent dat bij max speed nog (1-0.7)30% stuurkracht over hebt
         steering = input_steering * 2 + Input.GetAxis("Horizontal");
         steering = Mathf.Clamp(steering, -max_stearing, max_stearing);
         depth_throttle = slider_depth.value*10;
@@ -159,7 +166,7 @@ public class Driver : PlayerCharacter
         spr_steeringwheel_right.fillAmount = max_stearing;
 
         Quaternion steeringwheel_rotation = Quaternion.Euler(0f, 0f, -90 * steering);
-        spr_steeringwheel_pointer.transform.SetPositionAndRotation(center_steeringwheel + steeringwheel_rotation * new Vector3(0, 320, 0), steeringwheel_rotation);
+        spr_steeringwheel_pointer.transform.SetPositionAndRotation(center_steeringwheel + steeringwheel_rotation * new Vector3(0, Screen.height/2, 0), steeringwheel_rotation);
 
         text_direction.text = Quaternion.LookRotation(transform.forward).eulerAngles.y.ToString("F0") + "°";
         text_speed.text = "Speed: " + speed.ToString("F1");
