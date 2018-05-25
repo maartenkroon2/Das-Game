@@ -9,13 +9,15 @@ public class Commander : PlayerCharacter
     private Heightmapmaker heightmapmaker;
     private Vector3 map_size;
     private float max_zoom;
+    private Terrain terrain;
 
     // Use this for initialization
     protected override void Start()
     {
         base.Start();
         camera.transform.SetParent(null);
-        map_size = Terrain.activeTerrain.terrainData.size;
+        terrain = Terrain.activeTerrain;
+        map_size = terrain.terrainData.size;
         max_zoom = Mathf.Min(map_size.x * (float)Screen.height / (float)Screen.width * 0.5f, map_size.z /2);
 
         Instantiate(heightmapmaker);
@@ -55,11 +57,11 @@ public class Commander : PlayerCharacter
             // Make sure the orthographic size never drops below zero.
             camera.orthographicSize = Mathf.Clamp(camera.orthographicSize, 250, max_zoom);
 
-            if (camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).x < 0) {camera.transform.position -= new Vector3(camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).x,0,0);}
-            if (camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).z < 0) {camera.transform.position -= new Vector3(0, 0 ,camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).z); }
+            if (camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).x < terrain.transform.position.x) {camera.transform.position -= new Vector3(camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).x - terrain.transform.position.x, 0,0);}
+            if (camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).z < terrain.transform.position.z) {camera.transform.position -= new Vector3(0, 0 ,camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).z +-terrain.transform.position.z); }
 
-            if (camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).x > map_size.x) { camera.transform.position -= new Vector3(camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).x - map_size.x,0 ,0); }
-            if (camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).z > map_size.z) { camera.transform.position -= new Vector3(0, 0, camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).z - map_size.z); }
+            if (camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).x > map_size.x + terrain.transform.position.x) { camera.transform.position -= new Vector3(camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).x - map_size.x - terrain.transform.position.x, 0 ,0); }
+            if (camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).z > map_size.z + terrain.transform.position.z) { camera.transform.position -= new Vector3(0, 0, camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).z - map_size.z - terrain.transform.position.z); }
         }
     }
 
@@ -72,11 +74,11 @@ public class Commander : PlayerCharacter
             {
                 Vector3 camera_movement = new Vector3(touchZero.deltaPosition.x, 0, touchZero.deltaPosition.y) * camera.orthographicSize / -300;
 
-                if (camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).x + camera_movement.x < 0) { camera_movement.x = -camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).x; }
-                if (camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).z + camera_movement.z < 0) { camera_movement.z = -camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).z; }
+                if (camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).x + camera_movement.x < terrain.transform.position.x) { camera_movement.x = -camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).x + terrain.transform.position.x; }
+                if (camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).z + camera_movement.z < terrain.transform.position.z) { camera_movement.z = -camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).z + terrain.transform.position.z; }
 
-                if (camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).x + camera_movement.x > map_size.x) { camera_movement.x = map_size.x - camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).x; }
-                if (camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).z + camera_movement.z > map_size.z) { camera_movement.z = map_size.z - camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).z; }
+                if (camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).x + camera_movement.x > map_size.x + terrain.transform.position.x) { camera_movement.x = map_size.x + terrain.transform.position.x - camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).x; }
+                if (camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).z + camera_movement.z > map_size.z + terrain.transform.position.z) { camera_movement.z = map_size.z + terrain.transform.position.z - camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).z; }
 
                 camera.transform.position += camera_movement;
             }
