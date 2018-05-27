@@ -1,24 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class Gunner : PlayerCharacter
 {
     [SerializeField]
     private Torpedo torpedo;
 
+    [SerializeField]
+    private Transform torpedoTube1, torpedoTube2;
+
     protected override void Start()
     {
         base.Start();
+        
     }
 
-    // Update is called once per frame
+    // Update is called once per frame.
     private void Update()
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            Instantiate(torpedo, transform.position, transform.rotation);
+            CmdFire();
         }
+    }
+
+    // Command the server to fire a torpedo.
+    [Command]
+    private void CmdFire()
+    {
+        Instantiate(torpedo, torpedoTube1.position, torpedoTube1.rotation);
     }
 
     private void LateUpdate()

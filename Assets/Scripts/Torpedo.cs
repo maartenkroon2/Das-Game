@@ -4,18 +4,13 @@ using UnityEngine;
 
 public class Torpedo : MonoBehaviour {
     [SerializeField]
-    private float speed = 10000;
+    private float speed;
 
     private Rigidbody rigidbody;
 
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
-        Fire();
+        rigidbody.velocity = transform.forward * speed;     
     }    
-
-    public void Fire()
-    {
-        rigidbody.AddForce(transform.forward * speed);
-    }
 }

@@ -4,9 +4,6 @@ using UnityEngine.UI;
 // The Driver class is a PlayerCharacter that contains the code for controlling the submarine.
 public class Driver : PlayerCharacter
 {
-    private GameObject submarine;
-    private Rigidbody rigidbody;
-
     private float steering, throttle, max_stearing, input_steering, speed; //depth_throttle
     private float[] stearing_arr = new float[10];
     private int stearing_arr_index;
@@ -16,9 +13,6 @@ public class Driver : PlayerCharacter
     // Use this for initialization.
     protected override void Start()
     {
-        // Get a reference to the submarine and it's rigidbody
-        submarine = GameObject.FindGameObjectWithTag("Submarine");
-        rigidbody = submarine.GetComponent<Rigidbody>();
         Slider_Throttle = transform.GetComponentInChildren<Slider>();
         //Slider_Throttle = GameObject.FindGameObjectWithTag("Slider_Throttle").GetComponent<Slider>();
         speedtext = transform.GetComponentInChildren<Text >();
