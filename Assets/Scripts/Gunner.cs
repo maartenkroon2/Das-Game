@@ -13,10 +13,10 @@ public class Gunner : PlayerCharacter
 
     private bool fireFromTube1 = true;
 
-    protected override void Start()
-    {
-        base.Start();
-    }
+    //protected override void Start()
+    //{
+    //    base.Start();
+    //}
 
     // Update is called once per frame.
     private void Update()
