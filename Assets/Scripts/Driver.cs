@@ -129,7 +129,7 @@ public class Driver : PlayerCharacter
     // FixedUpdate is called every fixed timestep.
     private void FixedUpdate()
     {
-        rigidbody.AddTorque(rigidbody.transform.up * steering * speed * 100000);
+        rigidbody.AddTorque(rigidbody.transform.up * steering * speed * 200000);
         rigidbody.velocity = rigidbody.transform.forward * speed;
         rigidbody.AddForce(rigidbody.transform.forward * 100000 * throttle);
 
