@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 // The PlayerCharacter class is the base class for the different PlayerCharacters
 public class PlayerCharacter : NetworkBehaviour {
     protected Camera camera;
-    private Canvas canvas;
+    protected Canvas canvas;
     protected GameObject submarine;
     protected Rigidbody rigidbody;
 
@@ -16,8 +16,8 @@ public class PlayerCharacter : NetworkBehaviour {
 
         camera.enabled = true;
 
-        canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
-        canvas.worldCamera = camera;
+        canvas = GetComponentInChildren<Canvas>();
+        //canvas.worldCamera = camera;
 
         // Get a reference to the submarine and it's rigidbody
         submarine = GameObject.FindGameObjectWithTag("Submarine");

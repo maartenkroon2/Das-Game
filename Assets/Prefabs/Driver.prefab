@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 222967512808512758}
   - component: {fileID: 114726626283834454}
   m_Layer: 5
-  m_Name: Steeringwheel_left
+  m_Name: SteeringwheelLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 222282305693646594}
   - component: {fileID: 114489570875532742}
   m_Layer: 5
-  m_Name: Steeringwheel_right
+  m_Name: SteeringwheelRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 222232941479964382}
   - component: {fileID: 114856423591221114}
   m_Layer: 5
-  m_Name: Steeringwheel_pointer
+  m_Name: SteeringwheelPointer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 222600501782118858}
   - component: {fileID: 114707985866923336}
   m_Layer: 0
-  m_Name: Text_Speed
+  m_Name: SpeedText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 222970495877959672}
   - component: {fileID: 114736266578216550}
   m_Layer: 5
-  m_Name: Text_Direction
+  m_Name: DirectionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 114024841879648040}
   - component: {fileID: 114609304987720468}
   m_Layer: 5
-  m_Name: Slider_Depth
+  m_Name: DepthSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 224293128990679272}
   - component: {fileID: 114411633702556110}
   m_Layer: 5
-  m_Name: Slider_Throttle
+  m_Name: ThrottleSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 222172448404418546}
   - component: {fileID: 114917056217628246}
   m_Layer: 5
-  m_Name: Text_Depth
+  m_Name: DepthText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
