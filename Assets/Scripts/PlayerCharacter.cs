@@ -22,5 +22,9 @@ public class PlayerCharacter : NetworkBehaviour {
         // Get a reference to the submarine and it's rigidbody
         submarine = GameObject.FindGameObjectWithTag("Submarine");
         rigidbody = submarine.GetComponent<Rigidbody>();
+
+        // Place the character in the submarine
+        transform.parent = submarine.transform;
+        transform.localPosition = new Vector3(0, 0, 0);
     }
 }

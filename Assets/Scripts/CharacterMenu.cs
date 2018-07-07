@@ -17,6 +17,6 @@ public class CharacterMenu : MonoBehaviour {
             Destroy(this.character);
         }
 
-        character = Instantiate(character, submarine.transform);
+        this.character = Instantiate(character); //, submarine.transform);
     }
 }

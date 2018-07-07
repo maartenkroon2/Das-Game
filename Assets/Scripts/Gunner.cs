@@ -6,15 +6,16 @@ using UnityEngine.Networking;
 public class Gunner : PlayerCharacter
 {
     [SerializeField]
-    private Torpedo torpedo;
+    private GameObject torpedoPrefab;
 
     [SerializeField]
     private Transform torpedoTube1, torpedoTube2;
 
+    private bool fireFromTube1 = true;
+
     protected override void Start()
     {
         base.Start();
-        
     }
 
     // Update is called once per frame.
@@ -22,15 +23,23 @@ public class Gunner : PlayerCharacter
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            CmdFire();
+            Fire();
         }
     }
 
-    // Command the server to fire a torpedo.
-    [Command]
-    private void CmdFire()
+    private void Fire()
     {
-        Instantiate(torpedo, torpedoTube1.position, torpedoTube1.rotation);
+        GameObject torpedo;
+        if (fireFromTube1)
+        {
+            torpedo = Instantiate(torpedoPrefab, submarine.transform.position + torpedoTube1.localPosition, torpedoTube1.rotation);
+        }
+        else
+        {
+            torpedo = Instantiate(torpedoPrefab, submarine.transform.position + torpedoTube2.localPosition, torpedoTube2.rotation);
+        }
+        NetworkServer.Spawn(torpedo);
+        fireFromTube1 = !fireFromTube1;
     }
 
     private void LateUpdate()
