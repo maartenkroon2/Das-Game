@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Commander : PlayerCharacter
 {
     [SerializeField]
-    private Heightmapmaker heightmapmaker;
+    private Minimap minimap;
     private Vector3 map_size;
     private float max_zoom;
     private Terrain terrain;
@@ -20,7 +20,7 @@ public class Commander : PlayerCharacter
         map_size = terrain.terrainData.size;
         max_zoom = Mathf.Min(map_size.x * (float)Screen.height / (float)Screen.width * 0.5f, map_size.z /2);
 
-        Instantiate(heightmapmaker);
+        Instantiate(minimap);
     }
 	
 	// Update is called once per frame

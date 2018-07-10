@@ -218,8 +218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be562221ca601564c892a2322d55476b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heightmapmaker: {fileID: 114650217349804492, guid: fd75ac35f5da12747bbd1148a868baed,
-    type: 2}
+  minimap: {fileID: 114317277128171236, guid: 1dd43fc73d96b934a847b9a3ec6c33d6, type: 2}
 --- !u!114 &114346167551576650
 MonoBehaviour:
   m_ObjectHideFlags: 1
