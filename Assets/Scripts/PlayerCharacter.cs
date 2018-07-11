@@ -12,10 +12,11 @@ public class PlayerCharacter : NetworkBehaviour {
     // Enables the class specific camera and disables the default main camera.
     protected virtual void Start () {
         camera = GetComponentInChildren<Camera>();
-        Camera.main.gameObject.SetActive(false);
-
-        camera.enabled = true;
-
+        if (camera != null)
+        {
+            Camera.main.gameObject.SetActive(false);
+            camera.enabled = true;
+        }
         canvas = GetComponentInChildren<Canvas>();
         //canvas.worldCamera = camera;
 

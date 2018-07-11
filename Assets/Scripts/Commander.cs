@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Commander : PlayerCharacter
 {
     [SerializeField]
-    private Minimap minimap;
+    private Map minimap;
     private Vector3 map_size;
     private float max_zoom;
     private Terrain terrain;
@@ -49,7 +49,6 @@ public class Commander : PlayerCharacter
 
             // Find the difference in the distances between each frame.
             float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
-
 
             // ... change the orthographic size based on the change in distance between the touches.
             camera.orthographicSize += deltaMagnitudeDiff;
