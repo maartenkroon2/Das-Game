@@ -9,7 +9,7 @@ public class Gunner : PlayerCharacter
     private GameObject torpedoPrefab;
 
     [SerializeField]
-    private Transform torpedoTube1, torpedoTube2;
+    private Transform torpedoTube1, torpedoTube2; // torpedoTubes should maybe be a collection that is getted from the submarine.
 
     private bool fireFromTube1 = true;
 

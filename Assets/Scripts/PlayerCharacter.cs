@@ -9,10 +9,11 @@ public class PlayerCharacter : NetworkBehaviour {
     protected Rigidbody rigidbody;
 
     // Use this for initialization
-    // Enables the class specific camera and disables the default main camera.
     protected virtual void Start () {
+        // Disable the default main camera.
         Camera.main.gameObject.SetActive(false);
 
+        // Get a reference to the character specific camera and canvas
         camera = GetComponentInChildren<Camera>();
         canvas = GetComponentInChildren<Canvas>();
 
