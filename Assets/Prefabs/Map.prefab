@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 20710195571821740}
   - component: {fileID: 124099002938090560}
   - component: {fileID: 81887584234370242}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,8 +38,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4518241181265058}
   - component: {fileID: 114317277128171236}
-  m_Layer: 0
-  m_Name: Minimap
+  - component: {fileID: 136597097470166218}
+  m_Layer: 13
+  m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,7 +57,7 @@ GameObject:
   - component: {fileID: 33927936395644230}
   - component: {fileID: 64188411250188184}
   - component: {fileID: 23226147556567874}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: MapPlane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,8 +214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8269ebcacaaf40428c552f3e104c878, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shader: {fileID: 10708, guid: 0000000000000000f000000000000000, type: 0}
-  detectionRadius: 10
+  detectionRadius: 100000
 --- !u!124 &124099002938090560
 Behaviour:
   m_ObjectHideFlags: 1
@@ -222,3 +222,16 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1286418454134756}
   m_Enabled: 1
+--- !u!136 &136597097470166218
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1311260638071312}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}

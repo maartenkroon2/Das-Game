@@ -6,18 +6,21 @@ public class Map : MonoBehaviour
 {
     private GameObject mapPlane;
     private Terrain terrain;
+    private Camera camera;
 
     [SerializeField]
     private float detectionRadius = 10f;
 
-    CapsuleCollider collider;
-    int terrainResolution;
-    float lowestPointBelowWater, waterLevel = 0; // This should be a fancy function that gets the waterLevel.
+    private CapsuleCollider collider;
+    private int terrainResolution;
+    private float lowestPointBelowWater, waterLevel = 0; // This should be a fancy function that gets the waterLevel.
+    private Vector3 mapSize;
+    private float maxZoom;
 
     // Use this for initialization.
     void Start()
     {
-        mapPlane = GameObject.Find("MapPlane");
+        mapPlane = transform.Find("MapPlane").gameObject;
         terrain = Terrain.activeTerrain;
         terrainResolution = terrain.terrainData.heightmapResolution - 1;
 
@@ -25,12 +28,21 @@ public class Map : MonoBehaviour
         CreateTexture();
 
         // Creates a collider for detection of objects.
-        collider = gameObject.AddComponent<CapsuleCollider>();
+        collider = GetComponent<CapsuleCollider>();
         collider.radius = detectionRadius;
 
         //The collider height should be twice the height of the lowest point in the terrain.
         collider.height = lowestPointBelowWater * 2;
-        Debug.Log(lowestPointBelowWater);
+
+        camera = GetComponentInChildren<Camera>();
+        mapSize = terrain.terrainData.size;
+        maxZoom = Mathf.Min(mapSize.x * (float)Screen.height / (float)Screen.width * 0.5f, mapSize.z / 2);
+    }
+
+    private void Update()
+    {
+        Zoom();
+        Scroll();
     }
 
     // Finds lowest point in the map.
@@ -48,11 +60,13 @@ public class Map : MonoBehaviour
         return lowestPoint + (waterLevel + terrain.transform.position.y);
     }
 
-    void CreateTexture()
+    private void CreateTexture()
     {
         // Places the mapPlane over the terrain and makes it the same size as the terrain.       
         mapPlane.transform.position = new Vector3(terrain.transform.position.x + terrain.terrainData.size.x / 2, terrain.transform.position.y, terrain.transform.position.z + terrain.terrainData.size.z / 2);
         mapPlane.transform.localScale = new Vector3(terrain.terrainData.size.x / 10, 0, terrain.terrainData.size.z / 10);
+
+        // Place the mapPlane on a seperate layer only the attached camera can see.
         mapPlane.layer = LayerMask.NameToLayer("Map");
 
         // Use a color array since this is much quicker than calling texture.SetPixel for each pixel in the texture.
@@ -85,5 +99,71 @@ public class Map : MonoBehaviour
         texture.SetPixels(textureColors);
         texture.Apply();
         mapPlane.GetComponent<Renderer>().material.mainTexture = texture;
+    }
+
+    private void Zoom()
+    {
+        // If there are two touches on the device...
+        if (Input.touchCount == 2)
+        {
+            // Store both touches.
+            Touch touchZero = Input.GetTouch(0);
+            Touch touchOne = Input.GetTouch(1);
+
+            // Find the position in the previous frame of each touch.
+            Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+            Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+
+            // Find the magnitude of the vector (the distance) between the touches in each frame.
+            float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+            float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+
+            // Find the difference in the distances between each frame.
+            float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+
+            // ... change the orthographic size based on the change in distance between the touches.
+            camera.orthographicSize += deltaMagnitudeDiff;
+
+            // Make sure the orthographic size never drops below zero.
+            camera.orthographicSize = Mathf.Clamp(camera.orthographicSize, 250, maxZoom);
+
+            if (camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).x < terrain.transform.position.x) { camera.transform.position -= new Vector3(camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).x - terrain.transform.position.x, 0, 0); }
+            if (camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).z < terrain.transform.position.z) { camera.transform.position -= new Vector3(0, 0, camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).z + -terrain.transform.position.z); }
+
+            if (camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).x > mapSize.x + terrain.transform.position.x) { camera.transform.position -= new Vector3(camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).x - mapSize.x - terrain.transform.position.x, 0, 0); }
+            if (camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).z > mapSize.z + terrain.transform.position.z) { camera.transform.position -= new Vector3(0, 0, camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).z - mapSize.z - terrain.transform.position.z); }
+        }
+    }
+
+    private void Scroll()
+    {
+        if (Input.touchCount == 1)
+        {
+            Touch touchZero = Input.GetTouch(0);
+            if (touchZero.phase == TouchPhase.Moved)
+            {
+                Vector3 camera_movement = new Vector3(touchZero.deltaPosition.x, 0, touchZero.deltaPosition.y) * camera.orthographicSize / -300;
+
+                if (camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).x + camera_movement.x < terrain.transform.position.x) { camera_movement.x = -camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).x + terrain.transform.position.x; }
+                if (camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).z + camera_movement.z < terrain.transform.position.z) { camera_movement.z = -camera.ScreenToWorldPoint(new Vector3(0, 0, 0)).z + terrain.transform.position.z; }
+
+                if (camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).x + camera_movement.x > mapSize.x + terrain.transform.position.x) { camera_movement.x = mapSize.x + terrain.transform.position.x - camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).x; }
+                if (camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).z + camera_movement.z > mapSize.z + terrain.transform.position.z) { camera_movement.z = mapSize.z + terrain.transform.position.z - camera.ScreenToWorldPoint(new Vector3((float)Screen.width, (float)Screen.height, 0)).z; }
+
+                camera.transform.position += camera_movement;
+            }
+        }
+    }
+
+    // When a detectable object enters our detection radius we enable it's icon.
+    private void OnTriggerEnter(Collider other)
+    {
+        other.gameObject.GetComponent<DetectableObject>().SetIconActive(true);        
+    }
+
+    // If a detectable object leaves our detection radius we disable it's icon.
+    private void OnTriggerExit(Collider other)
+    {
+        other.gameObject.GetComponent<DetectableObject>().SetIconActive(true);
     }
 }

@@ -11,14 +11,10 @@ public class PlayerCharacter : NetworkBehaviour {
     // Use this for initialization
     // Enables the class specific camera and disables the default main camera.
     protected virtual void Start () {
+        Camera.main.gameObject.SetActive(false);
+
         camera = GetComponentInChildren<Camera>();
-        if (camera != null)
-        {
-            Camera.main.gameObject.SetActive(false);
-            camera.enabled = true;
-        }
         canvas = GetComponentInChildren<Canvas>();
-        //canvas.worldCamera = camera;
 
         // Get a reference to the submarine and it's rigidbody
         submarine = GameObject.FindGameObjectWithTag("Submarine");
