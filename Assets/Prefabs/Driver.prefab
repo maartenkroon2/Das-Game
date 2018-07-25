@@ -530,14 +530,14 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 114264709738065094}
   m_FillRect: {fileID: 0}
   m_HandleRect: {fileID: 224833747837113236}
   m_Direction: 2
-  m_MinValue: -4
-  m_MaxValue: 4
-  m_WholeNumbers: 1
+  m_MinValue: -1
+  m_MaxValue: 1
+  m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
