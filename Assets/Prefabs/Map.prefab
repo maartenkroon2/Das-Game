@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 20710195571821740}
   - component: {fileID: 124099002938090560}
   - component: {fileID: 81887584234370242}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 4518241181265058}
   - component: {fileID: 114317277128171236}
   - component: {fileID: 136597097470166218}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 33927936395644230}
   - component: {fileID: 64188411250188184}
   - component: {fileID: 23226147556567874}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: MapPlane
   m_TagString: Untagged
   m_Icon: {fileID: 0}

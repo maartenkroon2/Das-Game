@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4511598394132504}
   - component: {fileID: 33636534352674102}
   - component: {fileID: 23563591382135342}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: ScrewBlade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4687763279520802}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ GameObject:
   - component: {fileID: 4455321322647086}
   - component: {fileID: 33957848261629408}
   - component: {fileID: 23450864214475206}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: Stabilizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 4412429176681732}
   - component: {fileID: 33557082851333020}
   - component: {fileID: 23719216338510712}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: Shaft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 4122494811877596}
   - component: {fileID: 33468110042649858}
   - component: {fileID: 23066633198213664}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: Fin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 114526726437417616}
   - component: {fileID: 114682333930445292}
   - component: {fileID: 114289574456866220}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: StandardTorpedo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 4323897135736126}
   - component: {fileID: 33052615694651432}
   - component: {fileID: 23930978069022468}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -480,7 +480,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83b218c606f597f4d8fade3004e6a4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 100
+  startSpeed: 50
+  maxSpeed: 200
+  acceleration: 300
 --- !u!114 &114682333930445292
 MonoBehaviour:
   m_ObjectHideFlags: 1
