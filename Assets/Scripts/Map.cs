@@ -18,7 +18,7 @@ public class Map : MonoBehaviour
     private float maxZoom;
 
     // Use this for initialization.
-    void Start()
+    private void Awake()
     {
         mapPlane = transform.Find("MapPlane").gameObject;
         terrain = Terrain.activeTerrain;
@@ -165,5 +165,13 @@ public class Map : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         other.gameObject.GetComponent<DetectableObject>().SetIconActive(true);
+    }
+
+    public void SetCameraPosition(Vector3 submarineLocation)
+    {
+        Vector3 cameraPosition = camera.transform.position;
+        cameraPosition.x = submarineLocation.x;
+        cameraPosition.z = submarineLocation.z;
+        camera.transform.position = cameraPosition;
     }
 }

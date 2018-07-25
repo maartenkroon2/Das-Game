@@ -14,6 +14,7 @@ public class Commander : PlayerCharacter
         base.Start();
         //camera.transform.SetParent(null);
 
-        Instantiate(map);
+        map = Instantiate(map);
+        map.SetCameraPosition(submarine.transform.position);
     }	
 }
