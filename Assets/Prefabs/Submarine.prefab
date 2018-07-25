@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4834365204916964}
   - component: {fileID: 65039189888923916}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RightSternPlane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4955137403496302}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,7 +50,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4834000651077878}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TorpedoTubeLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66,7 +66,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4035440403993520}
   - component: {fileID: 65724602492362864}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: LeftSternPlane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,7 +82,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4145947490087736}
   - component: {fileID: 65192913048151580}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BowPlanes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4856036557096208}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ChildColliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 33407883196966388}
   - component: {fileID: 23774537548744038}
   - component: {fileID: 65181058862083466}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Periscope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4319451130471138}
   - component: {fileID: 65633967253977066}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 212980601041096014}
   - component: {fileID: 114163202876624510}
   - component: {fileID: 135699749754599812}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: FriendlyShip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4435366837910182}
   - component: {fileID: 65008940223081170}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SailPlanes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,7 +181,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4649043978303988}
   - component: {fileID: 65767525600548164}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FrontFin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +199,7 @@ GameObject:
   - component: {fileID: 54666600445898570}
   - component: {fileID: 114805130729147972}
   - component: {fileID: 114022456462285228}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Submarine
   m_TagString: Submarine
   m_Icon: {fileID: 0}
@@ -214,7 +214,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4405609029328336}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TorpedoTubeRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 33542391278966230}
   - component: {fileID: 23067730618006912}
   - component: {fileID: 136956405953391880}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -248,7 +248,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4293080924811024}
   - component: {fileID: 65347546300642864}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Rudder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -371,7 +371,7 @@ Transform:
   m_GameObject: {fileID: 1356633363705378}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children: []
   m_Father: {fileID: 4455961482234676}
   m_RootOrder: 3
@@ -559,7 +559,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 84
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!65 &65008940223081170
 BoxCollider:
