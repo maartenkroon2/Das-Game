@@ -4,15 +4,16 @@ using UnityEngine.UI;
 // The Driver class is a PlayerCharacter that contains the code for controlling the submarine.
 public class Driver : PlayerCharacter
 {
-    private float steering, throttle, maxSteering, inputStearing, speed, depthThrottle, maxSpeed;
-    private float[] steeringArray = new float[10];
+    private float steering, throttle, maxSteering, inputStearing, inputThrotle, speed, depthThrottle, maxSpeed;
+    private float[] steeringArray = new float[10], throttleArray = new float[10];
     private int steeringArrayIndex;
+    public float addforce = 200000;
+    public float addtorque = 800000;
 
     //canvas
     private Slider throttleSlider, depthSlider;
     private Image steeringwheelLeftSprite, steeringwheelRightSprite, steeringwheelPointerSprite;
     private Text speedText, depthText, directionText;
-    private Vector3 steeringWheelCenter;
 
     // Use this for initialization.
     protected override void Start()
@@ -22,13 +23,8 @@ public class Driver : PlayerCharacter
         GetSliders();
         GetImages();
         GetTexts();
-        steeringWheelCenter = steeringwheelPointerSprite.transform.position;
 
-        /* Vraag van Maarten: waarom een berekening om de maxSpeed te bepalen? 
-         * maxSpeed zou naar mijn mening de maximale velocity in Unity units per
-         * x tijd moeten zijn.
-         */     
-        maxSpeed = (100000 / rigidbody.drag - 0.01f * 100000) / rigidbody.mass;
+        maxSpeed = (addforce / rigidbody.drag - 0.01f * addforce) / rigidbody.mass;
 
         // Set the center of mass and intertiaTensor to the center of the object.
         rigidbody.centerOfMass = Vector3.zero;
@@ -128,18 +124,11 @@ public class Driver : PlayerCharacter
     // FixedUpdate is called every fixed timestep.
     private void FixedUpdate()
     {
-        rigidbody.AddTorque(rigidbody.transform.up * steering * speed * 100000);
-
-        /* Vraag van Maarten: waarom gebruik je zowel AddForce en zet je handmatig de
-         * velocity?
-         */        
+        rigidbody.AddTorque(rigidbody.transform.up * steering * speed * addtorque);
         rigidbody.velocity = rigidbody.transform.forward * speed;
-        rigidbody.AddForce(rigidbody.transform.forward * 100000 * throttle);
+        rigidbody.AddForce(rigidbody.transform.forward * addforce * throttle);
 
-        /* Vraag van Maarten: Ik weet niet precies wat onderstaande stukje code doet maar 
-         * het zorgt er nu voor dat de submarine op en neer beweegt. Waarom doe je hier 
-         * iets met Time.deltaTime?
-         */
+
         if (rigidbody.transform.position.y + depthThrottle * Time.deltaTime > 0)
         {
             rigidbody.MovePosition(rigidbody.transform.position + new Vector3(0, -rigidbody.transform.position.y, 0));
@@ -152,17 +141,23 @@ public class Driver : PlayerCharacter
 
     private void GetInput()
     {
-        /* Vraag van Maarten: hier wordt veel gebruik gemaakt van magic numbers en waarom wordt
-         * er gebruikt gemaakt van een array om iets met sturen te doen?
-         */
+        //takes the average of 10 inputs of 
         steeringArrayIndex++;
         if (steeringArrayIndex >= 10) { steeringArrayIndex = 0; }
         steeringArray[steeringArrayIndex] = Input.acceleration.x;
-        float total = 0;
-        for (int i = 0; i < 10; i++) { total += steeringArray[i]; }
-        inputStearing = total / 10;
+        throttleArray[steeringArrayIndex] = Input.acceleration.y;
+        float totalsteering = 0, totalthrotle = 0;
+        for (int i = 0; i < 10; i++)
+        {
+            totalsteering += steeringArray[i];
+            totalthrotle += throttleArray[i];
 
-        throttle = throttleSlider.value / throttleSlider.maxValue;
+        }
+        inputStearing = totalsteering / 10;
+        inputThrotle = totalthrotle / 10;
+
+        throttle = (Mathf.Clamp(inputThrotle, -1f, -0.4f) + 0.7f) / 0.3f;
+        //throttle = throttleSlider.value / throttleSlider.maxValue;
         maxSteering = 1f - rigidbody.velocity.magnitude / maxSpeed * 0.7f; //0.7f betekent dat bij max speed nog (1-0.7)30% stuurkracht over hebt
         steering = inputStearing * 2 + Input.GetAxis("Horizontal");
         steering = Mathf.Clamp(steering, -maxSteering, maxSteering);
@@ -176,11 +171,13 @@ public class Driver : PlayerCharacter
         steeringwheelRightSprite.fillAmount = maxSteering;
 
         Quaternion steeringwheel_rotation = Quaternion.Euler(0f, 0f, -90 * steering);
-        steeringwheelPointerSprite.transform.SetPositionAndRotation(steeringWheelCenter + steeringwheel_rotation * new Vector3(0, Screen.height / 2, 0), steeringwheel_rotation);
+        steeringwheelPointerSprite.transform.SetPositionAndRotation(new Vector3(Screen.width / 2,Screen.height/10 ,0) + steeringwheel_rotation * new Vector3(0, Screen.height / 2, 0), steeringwheel_rotation);
 
         directionText.text = Quaternion.LookRotation(transform.forward).eulerAngles.y.ToString("F0") + "°";
         speedText.text = "Speed: " + speed.ToString("F1");
         depthText.text = "Depth: " + transform.position.y.ToString("F1");
+
+        throttleSlider.value = throttle;
     }
 
     private void LateUpdate()
