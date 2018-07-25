@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212641050593405782}
   - component: {fileID: 114066069628627960}
   - component: {fileID: 135328940710751650}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: FriendlyShip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
