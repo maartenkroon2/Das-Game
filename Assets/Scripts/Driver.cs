@@ -7,14 +7,13 @@ public class Driver : PlayerCharacter
     private float steering, throttle, maxSteering, inputStearing, inputThrotle, speed, depthThrottle, maxSpeed;
     private float[] steeringArray = new float[10], throttleArray = new float[10];
     private int steeringArrayIndex;
+    public float addforce = 200000;
+    public float addtorque = 800000;
 
     //canvas
     private Slider throttleSlider, depthSlider;
     private Image steeringwheelLeftSprite, steeringwheelRightSprite, steeringwheelPointerSprite;
     private Text speedText, depthText, directionText;
-    private Vector3 steeringWheelCenter;
-    public float addforce = 200000;
-    public float addtorque = 800000;
 
     // Use this for initialization.
     protected override void Start()
@@ -24,7 +23,6 @@ public class Driver : PlayerCharacter
         GetSliders();
         GetImages();
         GetTexts();
-        steeringWheelCenter = steeringwheelPointerSprite.transform.position;
 
         maxSpeed = (addforce / rigidbody.drag - 0.01f * addforce) / rigidbody.mass;
 
