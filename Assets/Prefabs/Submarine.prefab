@@ -51,7 +51,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4834000651077878}
   m_Layer: 0
-  m_Name: TorpedoTube2
+  m_Name: TorpedoTubeLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -215,7 +215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4405609029328336}
   m_Layer: 0
-  m_Name: TorpedoTube1
+  m_Name: TorpedoTubeRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

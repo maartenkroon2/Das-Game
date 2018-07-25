@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 114682333930445292}
   - component: {fileID: 114289574456866220}
   m_Layer: 10
-  m_Name: Torpedo
+  m_Name: StandardTorpedo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
