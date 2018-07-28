@@ -3,6 +3,8 @@
 public class Torpedo : MonoBehaviour {
     [SerializeField]
     private float startSpeed, maxSpeed, acceleration;
+    [SerializeField]
+    private GameObject explosionPrefab;
     private Rigidbody rigidbody;
 
     private void Start()
@@ -12,7 +14,7 @@ public class Torpedo : MonoBehaviour {
         rigidbody.velocity = transform.forward * startSpeed;
 
         // Destroy the torpedo after 10 seconds, this is enough for them to escape view. 
-        // Object pooling could be used here but is not really needed.
+        // Object pooling could be used here but is not really needed since the rate of fire is very low.
         Destroy(gameObject, 10);
     }
 
@@ -20,11 +22,13 @@ public class Torpedo : MonoBehaviour {
     {
         // Increases the speed of the torpedo over time until the max speed is reached.
         rigidbody.AddForce(transform.forward * acceleration);
-        rigidbody.velocity = rigidbody.velocity.magnitude > maxSpeed ? transform.forward * maxSpeed : rigidbody.velocity;   
+        rigidbody.velocity = rigidbody.velocity.magnitude > maxSpeed ? transform.forward * maxSpeed : rigidbody.velocity;       
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("boom" + collision.gameObject.name);
+        gameObject.SetActive(false);
+        collision.gameObject.SetActive(false);
+        Instantiate(explosionPrefab, transform.position, transform.rotation);
     }
 }

@@ -483,6 +483,7 @@ MonoBehaviour:
   startSpeed: 50
   maxSpeed: 200
   acceleration: 300
+  explosionPrefab: {fileID: 100010, guid: 645413a00f7bd0242bbd6d0e5eb6f439, type: 2}
 --- !u!114 &114682333930445292
 MonoBehaviour:
   m_ObjectHideFlags: 1
