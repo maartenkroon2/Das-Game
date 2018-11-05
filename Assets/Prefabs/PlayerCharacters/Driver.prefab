@@ -401,7 +401,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 114287307871330846}
   m_FillRect: {fileID: 0}
   m_HandleRect: {fileID: 224733076218997870}
@@ -555,6 +555,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7aaef5d26945c445aa3c243d043297c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  addforce: 200000
+  addtorque: 800000
 --- !u!114 &114489570875532742
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -4,11 +4,12 @@ using UnityEngine.UI;
 // The Driver class is a PlayerCharacter that contains the code for controlling the submarine.
 public class Driver : PlayerCharacter
 {
-    private float steering, throttle, maxSteering, inputStearing, inputThrotle, speed, depthThrottle, maxSpeed;
+    private float steering, throttle, maxSteering, inputStearing, inputThrotle, inputDiving, speed, depthThrottle, maxSpeed;
     private float[] steeringArray = new float[10], throttleArray = new float[10];
-    private int steeringArrayIndex;
+    private int steeringArrayIndex, touchId;
     public float addforce = 200000;
     public float addtorque = 800000;
+    private Vector2 touchStartPos;
 
     //canvas
     private Slider throttleSlider, depthSlider;
@@ -141,6 +142,7 @@ public class Driver : PlayerCharacter
 
     private void GetInput()
     {
+        //**Getting the stearing and throttle input values**//
         //takes the average of 10 inputs of 
         steeringArrayIndex++;
         if (steeringArrayIndex >= 10) { steeringArrayIndex = 0; }
@@ -156,13 +158,37 @@ public class Driver : PlayerCharacter
         inputStearing = totalsteering / 10;
         inputThrotle = totalthrotle / 10;
 
+        //**getting the diving input value**//
+        if(Input.touchCount == 1)
+        {
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began)
+            {
+                touchStartPos = touch.position;
+                touchId = touch.fingerId;
+                inputDiving = 0;
+            }
+            else
+            {
+                if (touchId == touch.fingerId)
+                {
+                    float dY = touch.position.y - touchStartPos.y;
+                    inputDiving = Mathf.Clamp(2*(dY / Screen.height),-1f,1f);
+                }
+            }
+        }
+        else
+        {
+            inputDiving = 0;
+        }
+
+        //**converting the input values to the actual values**//
         throttle = (Mathf.Clamp(inputThrotle, -1f, -0.4f) + 0.7f) / 0.3f;
-        //throttle = throttleSlider.value / throttleSlider.maxValue;
         maxSteering = 1f - rigidbody.velocity.magnitude / maxSpeed * 0.7f; //0.7f betekent dat bij max speed nog (1-0.7)30% stuurkracht over hebt
         steering = inputStearing * 2 + Input.GetAxis("Horizontal");
         steering = Mathf.Clamp(steering, -maxSteering, maxSteering);
-        depthThrottle = depthSlider.value * 10;
         speed = rigidbody.velocity.magnitude * Vector3.Dot(rigidbody.transform.forward, Vector3.Normalize(rigidbody.velocity));
+        depthThrottle = inputDiving * 10;
     }
 
     private void UpdateCanvas()
@@ -178,11 +204,12 @@ public class Driver : PlayerCharacter
         depthText.text = "Depth: " + transform.position.y.ToString("F1");
 
         throttleSlider.value = throttle;
+        depthSlider.value = inputDiving;
     }
 
     private void LateUpdate()
     {
-        if (camera.transform.position.y <= 0.1) { RenderSettings.fog = true; } // (camera.transform.position.y <= 0) werkt niet goed, kans op een camera half onderwater maar geen fog
+        if (camera.transform.position.y <= 0.1f) { RenderSettings.fog = true; } // (camera.transform.position.y <= 0) werkt niet goed, kans op een camera half onderwater maar geen fog
         else { RenderSettings.fog = false; }
     }
 }
